@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     tools{
-        maven 'Maven 3.6.1'
+        maven 'maven 3.6.1'
     }
 
     stages {
@@ -17,18 +17,24 @@ pipeline {
         stage('test') {
             steps {
                 echo 'Running unit tests on worker app'
+                dir('worker'){
+                    sh 'mvn clean test'
+                }
             }
         }
         stage('package') {
             steps {
                 echo 'Packaging worker app'
+                dir('worker'){
+                    sh 'mvn package'
+                }
             }
         }
     }
 
     post{
         always{
-            echo 'Build pipeline for worker is complete..'
+            echo 'Pipeline for worker is complete..'
         }
     }
 }
