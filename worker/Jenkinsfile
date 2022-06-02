@@ -45,13 +45,13 @@ pipeline {
 
     post{
         always{
-            echo 'Pipeline for worker is complete..'
+            echo "Pipeline for worker is complete.."
         }
         failure{
-            echo 'Build Failed - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)'
+            echo "Build Failed - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)"
         }
         success{
-            echo 'Build Succeeded - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)'
+            echo "Build Succeeded - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)"
         }
     }
 }
