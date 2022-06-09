@@ -5,6 +5,8 @@ import redis.clients.jedis.exceptions.JedisConnectionException;
 import java.sql.*;
 import org.json.JSONObject;
 
+// added comment to trigger test build by Jenkins
+
 class Worker {
   public static void main(String[] args) {
     try {
