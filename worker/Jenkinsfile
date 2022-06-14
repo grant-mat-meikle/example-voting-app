@@ -68,7 +68,9 @@ pipeline {
                         def workerImage = docker.build("xs98zprt/worker:v${env.BUILD_ID}","./worker")
                         /* Push the container to the custom Registry */
                         workerImage.push()
-                        workerImage.push("${env.BRANCH_NAME}")
+
+                        /* workerImage.push("${env.BRANCH_NAME}") */
+                        workerImage.push('latest')
                     }
                 }
             }
