@@ -49,8 +49,8 @@ pipeline {
                     docker.withRegistry('https://index.docker.io/v1/', 'dockerLogin') {
                         def voteImage = docker.build("xs98zprt/vote:v${env.BUILD_ID}","./vote")
                         /* Push the container to the custom Registry */
-                        workerImage.push()
-                        workerImage.push("${env.BRANCH_NAME}")
+                        voteImage.push()
+                        voteImage.push("${env.BRANCH_NAME}")
                     }
                 }
             }
