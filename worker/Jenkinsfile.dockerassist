@@ -1,14 +1,13 @@
 pipeline {
-    agent none
-    
+    agent{
+        docker{
+            image 'maven:3.6.1-jdk-8-alpine'
+            args '-v $HOME/.m2:/root/.m2'
+        }
+    }
+
     stages {
         stage('build') {
-            agent{
-                docker{
-                    image 'maven:3.6.1-jdk-8-alpine'
-                    args '-v $HOME/.m2:/root/.m2'
-                }
-            }
             when{
                 changeset "**/worker/**"
             }
@@ -20,12 +19,6 @@ pipeline {
             }
         }
         stage('test') {
-            agent{
-                docker{
-                    image 'maven:3.6.1-jdk-8-alpine'
-                    args '-v $HOME/.m2:/root/.m2'
-                }
-            }
             when{
                 changeset "**/worker/**"
             }
@@ -37,12 +30,6 @@ pipeline {
             }
         }
         stage('package') {
-            agent{
-                docker{
-                    image 'maven:3.6.1-jdk-8-alpine'
-                    args '-v $HOME/.m2:/root/.m2'
-                }
-            }
             when{
                 branch 'master'
                 changeset "**/worker/**"
@@ -52,24 +39,6 @@ pipeline {
                 dir('worker'){
                     sh 'mvn package -DskipTests'
                     archiveArtifacts artifacts: '**/target/*.jar', fingerprint: true
-                }
-            }
-        }
-        stage('docker-package') {
-            agent any
-            when{
-                branch 'master'
-                changeset "**/worker/**"
-            }
-            steps {
-                echo 'Packaging worker app image with docker'
-                script{
-                    docker.withRegistry('https://index.docker.io/v1/', 'dockerLogin') {
-                        def workerImage = docker.build("xs98zprt/worker:v${env.BUILD_ID}","./worker")
-                        /* Push the container to the custom Registry */
-                        workerImage.push()
-                        workerImage.push("${env.BRANCH_NAME}")
-                    }
                 }
             }
         }
