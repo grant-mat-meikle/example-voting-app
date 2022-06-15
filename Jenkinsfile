@@ -7,7 +7,6 @@ pipeline {
           image 'python:2.7.16-slim'
           args '--user root'
         }
-
       }
       when {
         changeset '**/vote/**'
@@ -17,7 +16,6 @@ pipeline {
         dir(path: 'vote') {
           sh 'pip install -r requirements.txt'
         }
-
       }
     }
 
@@ -27,7 +25,6 @@ pipeline {
           image 'python:2.7.16-slim'
           args '--user root'
         }
-
       }
       when {
         changeset '**/vote/**'
@@ -38,7 +35,6 @@ pipeline {
           sh 'pip install -r requirements.txt'
           sh 'nosetests -v'
         }
-
       }
     }
 
@@ -58,7 +54,6 @@ pipeline {
             voteImage.push("${env.BRANCH_NAME}")
           }
         }
-
       }
     }
 
@@ -68,7 +63,6 @@ pipeline {
           image 'maven:3.6.1-jdk-8-alpine'
           args '-v $HOME/.m2:/root/.m2'
         }
-
       }
       when {
         changeset '**/worker/**'
@@ -78,7 +72,6 @@ pipeline {
         dir(path: 'worker') {
           sh 'mvn compile'
         }
-
       }
     }
 
@@ -98,7 +91,6 @@ pipeline {
         dir(path: 'worker') {
           sh 'mvn clean test'
         }
-
       }
     }
 
@@ -108,7 +100,6 @@ pipeline {
           image 'maven:3.6.1-jdk-8-alpine'
           args '-v $HOME/.m2:/root/.m2'
         }
-
       }
       when {
         branch 'master'
@@ -120,7 +111,6 @@ pipeline {
           sh 'mvn package -DskipTests'
           archiveArtifacts(artifacts: '**/target/*.jar', fingerprint: true)
         }
-
       }
     }
 
@@ -149,7 +139,6 @@ pipeline {
         docker {
           image 'node:8.16.0-alpine'
         }
-
       }
       when {
         changeset '**/result/**'
@@ -159,7 +148,6 @@ pipeline {
         dir(path: 'result') {
           sh 'npm install'
         }
-
       }
     }
 
@@ -168,7 +156,6 @@ pipeline {
         docker {
           image 'node:8.16.0-alpine'
         }
-
       }
       when {
         changeset '**/result/**'
@@ -179,7 +166,6 @@ pipeline {
           sh 'npm install'
           sh 'npm test'
         }
-
       }
     }
 
@@ -199,7 +185,6 @@ pipeline {
             resultImage.push("${env.BRANCH_NAME}")
           }
         }
-
       }
     }
 
@@ -212,8 +197,8 @@ pipeline {
         sh 'docker-compose up -d'
       }
     }
-
   }
+      
   post {
     always {
       echo 'Pipeline for instavote is complete..'
@@ -226,6 +211,5 @@ pipeline {
     success {
       echo "Build Succeeded - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)"
     }
-
   }
 }
