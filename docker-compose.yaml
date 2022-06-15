@@ -27,6 +27,7 @@ services:
         
   vote:
     image: xs98zprt/vote:master
+    build: ./vote
     networks:
       - instavote
     ports:
@@ -36,6 +37,7 @@ services:
 
   result:
     image: xs98zprt/result:master
+    build: ./result
     networks:
       - instavote
     ports:
@@ -45,6 +47,7 @@ services:
 
   worker:
     image: xs98zprt/worker:master
+    build: ./worker
     networks:
       - instavote
     depends_on:
